@@ -4,8 +4,8 @@ const { expect } = require('chai');
 require('dotenv').config();
 
 // Testes
-describe('Checkout', () => {
-    describe('POST /checkout', () => {
+describe('Register', () => {
+    describe('POST /register', () => {
         
         beforeEach(async () => {
             const respostaLogin = await request(process.env.BASE_URL_GRAPHQL)
@@ -23,21 +23,21 @@ describe('Checkout', () => {
     
         });
 
-        it('Deve calcular o valor final quando informo produto, quantidade e frete', async () => {
+        it('Deve retornar erro ao tentar registrar email já cadastrado', async () => {
             const resposta = await request(process.env.BASE_URL_GRAPHQL)
-                .post('/api/checkout')
-                .set('Authorization', `Bearer ${token}`)
+                .post('/api/register')
                 .send({
                     query: `
                         mutation {
-                            checkout(items: [{ productId: 1, quantity: 2 }],freight: 10, paymentMethod: "boleto") {
-                                valorFinal}
-                        }   
+                            register(name: "bob", email: "bob@email.com", password: "123456") {
+                                name
+                                email}
+                        } 
                     `
                 });
                     
             expect(resposta.status).to.equal(200);
-            expect(resposta.body.data.checkout.valorFinal).to.equal(210)
+            expect(resposta.body.errors[0].message).to.equal("Email já cadastrado");
         });
     });
 });

@@ -1,14 +1,20 @@
 // Bibliotecas
 const request = require('supertest');
 const { expect } = require('chai');
-require('dotenv').config();
+const sinon = require('sinon');
+
+// Aplicação
+const app = require('../../../rest/app');
+
+// Mock
+const checkoutService = require('../../../src/services/checkoutService');
 
 // Testes
-describe('Checkout', () => {
+describe('Checkout Controller', () => {
     describe('POST /checkout', () => {
 
         beforeEach(async () => {
-            const respostaLogin = await request(process.env.BASE_URL_REST)
+            const respostaLogin = await request(app)
                 .post('/api/users/login')
                 .send({
                     email: 'bob@email.com',
@@ -20,7 +26,8 @@ describe('Checkout', () => {
         });
 
         it('Deve realizar checkout com sucesso quando informo produto e quantidade', async () => {
-            const resposta = await request(process.env.BASE_URL_REST)
+            
+            const resposta = await request(app)
                 .post('/api/checkout')
                 .set('Authorization', `Bearer ${token}`)
                 .send(
@@ -45,7 +52,10 @@ describe('Checkout', () => {
         });
 
         it('Devo receber erro de produto não encontrado quando informo ID não cadastrado', async () => {
-            const resposta = await request(process.env.BASE_URL_REST)
+            const checkoutServiceMock = sinon.stub(checkoutService, 'checkout');
+            checkoutServiceMock.throws({ status: 400, message: 'Produto não encontrado' });
+           
+            const resposta = await request(app)
                 .post('/api/checkout')
                 .set('Authorization', `Bearer ${token}`)
                 .send(
@@ -71,7 +81,11 @@ describe('Checkout', () => {
         });
 
         it('Deve retornar erro quando o token não é informado', async () => {
-            const resposta = await request(process.env.BASE_URL_REST)
+
+            const checkoutServiceMock = sinon.stub(checkoutService, 'checkout');
+            checkoutServiceMock.throws({ status: 401, message: 'Token inválido' });
+
+            const resposta = await request(app)
                 .post('/api/checkout')
                 .send(
                     {items: [
@@ -93,5 +107,9 @@ describe('Checkout', () => {
             expect(resposta.status).to.equal(401);
             expect(resposta.body).to.have.property('error', 'Token inválido')
         });
+
+        afterEach(() => {
+            sinon.restore();
+        })
     });
 });
