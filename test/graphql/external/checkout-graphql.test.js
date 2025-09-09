@@ -12,7 +12,7 @@ describe('Checkout', () => {
                 .send({
                     query: `
                         mutation {
-                            login(email: "ana@gmail.com", password: "123456") {
+                            login(email: "bob@email.com", password: "123456") {
                                 token
                             }
                         }
@@ -28,7 +28,7 @@ describe('Checkout', () => {
                 .send({
                     query: `
                         mutation {
-                            register(name: "analigia", email: "ana@gmail.com", password: "123456") {
+                            register(name: "bob", email: "bob@email.com", password: "123456") {
                                 name
                                 email}
                         } 

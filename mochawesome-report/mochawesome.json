@@ -5,9 +5,9 @@
     "passes": 2,
     "pending": 0,
     "failures": 0,
-    "start": "2025-09-09T13:57:30.110Z",
-    "end": "2025-09-09T13:57:30.171Z",
-    "duration": 61,
+    "start": "2025-09-09T16:22:36.429Z",
+    "end": "2025-09-09T16:22:36.497Z",
+    "duration": 68,
     "testsRegistered": 2,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "100de380-54ac-4f95-92bf-0864d38f36c0",
+      "uuid": "a3752aab-d04d-43bf-8a38-7ed3e91aa96b",
       "title": "",
       "fullFile": "C:\\Users\\AnaLígiaBragagnolo\\Ana-Pos\\pgats-2025-02-base\\test\\graphql\\external\\checkout-graphql.test.js",
       "file": "\\test\\graphql\\external\\checkout-graphql.test.js",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "2e792e51-1071-490f-a885-11560a858e3a",
+          "uuid": "eb9f9375-5f79-42a2-91fc-2e4e1a8057dc",
           "title": "Checkout",
           "fullFile": "C:\\Users\\AnaLígiaBragagnolo\\Ana-Pos\\pgats-2025-02-base\\test\\graphql\\external\\checkout-graphql.test.js",
           "file": "\\test\\graphql\\external\\checkout-graphql.test.js",
@@ -36,7 +36,7 @@
           "tests": [],
           "suites": [
             {
-              "uuid": "99fbdaba-9c3e-4d30-9b42-5601a024c1b3",
+              "uuid": "d43b5d3b-2050-413a-a0c3-186e9a7191f3",
               "title": "POST /login",
               "fullFile": "C:\\Users\\AnaLígiaBragagnolo\\Ana-Pos\\pgats-2025-02-base\\test\\graphql\\external\\checkout-graphql.test.js",
               "file": "\\test\\graphql\\external\\checkout-graphql.test.js",
@@ -45,17 +45,17 @@
                   "title": "\"before each\" hook in \"POST /login\"",
                   "fullTitle": "Checkout POST /login \"before each\" hook in \"POST /login\"",
                   "timedOut": false,
-                  "duration": 4,
+                  "duration": 5,
                   "state": null,
                   "speed": null,
                   "pass": false,
                   "fail": false,
                   "pending": false,
                   "context": null,
-                  "code": "const respostaLogin = await request(process.env.BASE_URL_GRAPHQL)\n    .post('/api/users/login')\n    .send({\n        query: `\n            mutation {\n                login(email: \"ana@gmail.com\", password: \"123456\") {\n                    token\n                }\n            }\n        `\n    });\ntoken = respostaLogin.body.data.login.token;",
+                  "code": "const respostaLogin = await request(process.env.BASE_URL_GRAPHQL)\n    .post('/api/users/login')\n    .send({\n        query: `\n            mutation {\n                login(email: \"bob@email.com\", password: \"123456\") {\n                    token\n                }\n            }\n        `\n    });\ntoken = respostaLogin.body.data.login.token;",
                   "err": {},
-                  "uuid": "665efc4b-be03-4b64-b61d-f497ca8d2de3",
-                  "parentUUID": "99fbdaba-9c3e-4d30-9b42-5601a024c1b3",
+                  "uuid": "80e27287-1af7-485d-91d8-09d5da8acc12",
+                  "parentUUID": "d43b5d3b-2050-413a-a0c3-186e9a7191f3",
                   "isHook": true,
                   "skipped": false
                 }
@@ -66,17 +66,17 @@
                   "title": "Deve retornar erro ao tentar registrar email já cadastrado",
                   "fullTitle": "Checkout POST /login Deve retornar erro ao tentar registrar email já cadastrado",
                   "timedOut": false,
-                  "duration": 7,
+                  "duration": 6,
                   "state": "passed",
                   "speed": "fast",
                   "pass": true,
                   "fail": false,
                   "pending": false,
                   "context": null,
-                  "code": "const resposta = await request(process.env.BASE_URL_GRAPHQL)\n    .post('/api/register')\n    .send({\n        query: `\n            mutation {\n                register(name: \"analigia\", email: \"ana@gmail.com\", password: \"123456\") {\n                    name\n                    email}\n            } \n        `\n    });\n        \nexpect(resposta.status).to.equal(200);\nexpect(resposta.body.errors[0].message).to.equal(\"Email já cadastrado\");",
+                  "code": "const resposta = await request(process.env.BASE_URL_GRAPHQL)\n    .post('/api/register')\n    .send({\n        query: `\n            mutation {\n                register(name: \"bob\", email: \"bob@email.com\", password: \"123456\") {\n                    name\n                    email}\n            } \n        `\n    });\n        \nexpect(resposta.status).to.equal(200);\nexpect(resposta.body.errors[0].message).to.equal(\"Email já cadastrado\");",
                   "err": {},
-                  "uuid": "70ca0bf7-bf11-4711-a54d-2afb09fcb1eb",
-                  "parentUUID": "99fbdaba-9c3e-4d30-9b42-5601a024c1b3",
+                  "uuid": "93776220-7864-4b8c-bc58-1beffb77f3bf",
+                  "parentUUID": "d43b5d3b-2050-413a-a0c3-186e9a7191f3",
                   "isHook": false,
                   "skipped": false
                 },
@@ -93,21 +93,21 @@
                   "context": null,
                   "code": "const resposta = await request(process.env.BASE_URL_GRAPHQL)\n    .post('/api/checkout')\n    .set('Authorization', `Bearer ${token}`)\n    .send({\n        query: `\n            mutation {\n                checkout(items: [{ productId: 1, quantity: 2 }],freight: 10, paymentMethod: \"boleto\") {\n                    valorFinal}\n            }   \n        `\n    });\n        \nexpect(resposta.status).to.equal(200);\nexpect(resposta.body.data.checkout.valorFinal).to.equal(210)",
                   "err": {},
-                  "uuid": "afd1fb1b-d426-4132-99af-fe73a3d8604a",
-                  "parentUUID": "99fbdaba-9c3e-4d30-9b42-5601a024c1b3",
+                  "uuid": "94b1807e-4ff7-4449-a1fc-a4242c830e97",
+                  "parentUUID": "d43b5d3b-2050-413a-a0c3-186e9a7191f3",
                   "isHook": false,
                   "skipped": false
                 }
               ],
               "suites": [],
               "passes": [
-                "70ca0bf7-bf11-4711-a54d-2afb09fcb1eb",
-                "afd1fb1b-d426-4132-99af-fe73a3d8604a"
+                "93776220-7864-4b8c-bc58-1beffb77f3bf",
+                "94b1807e-4ff7-4449-a1fc-a4242c830e97"
               ],
               "failures": [],
               "pending": [],
               "skipped": [],
-              "duration": 12,
+              "duration": 11,
               "root": false,
               "rootEmpty": false,
               "_timeout": 10000

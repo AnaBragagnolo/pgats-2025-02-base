@@ -10,7 +10,7 @@ describe('Checkout', () => {
             const respostaLogin = await request(process.env.BASE_URL_REST)
                 .post('/api/users/login')
                 .send({
-                    email: 'ana@gmail.com',
+                    email: 'bob@email.com',
                     password: '123456'
                 });
 
@@ -18,7 +18,7 @@ describe('Checkout', () => {
     
         });
 
-        it('Quando informo produto e quantidade o checkout é realizado com sucesso', async () => {
+        it('Deve realizar checkout com sucesso quando informo produto e quantidade', async () => {
             const resposta = await request(process.env.BASE_URL_REST)
                 .post('/api/checkout')
                 .set('Authorization', `Bearer ${token}`)
@@ -43,7 +43,7 @@ describe('Checkout', () => {
             expect(resposta.status).to.equal(200)
         });
 
-        it('Quando não informo produto recebo erro de produto não encontrado', async () => {
+        it('Devo receber erro de produto não encontrado quando informo ID não cadastrado', async () => {
             const resposta = await request(process.env.BASE_URL_REST)
                 .post('/api/checkout')
                 .set('Authorization', `Bearer ${token}`)
