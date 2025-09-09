@@ -1,9 +1,7 @@
-// Bibliotecas
 const request = require('supertest');
 const { expect } = require('chai');
 require('dotenv').config();
 
-// Testes
 describe('Checkout', () => {
     describe('POST /checkout', () => {
         

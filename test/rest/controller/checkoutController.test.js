@@ -1,15 +1,11 @@
-// Bibliotecas
 const request = require('supertest');
 const { expect } = require('chai');
 const sinon = require('sinon');
 
-// Aplicação
 const app = require('../../../rest/app');
 
-// Mock
 const checkoutService = require('../../../src/services/checkoutService');
 
-// Testes
 describe('Checkout Controller', () => {
     describe('POST /checkout', () => {
 
